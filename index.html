@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARK HUB // Key System</title>
+    <style>
+        :root {
+            --bg-main: #0b0b0e;
+            --bg-card: #121217;
+            --bg-element: #191922;
+            --border: #262635;
+            --accent: #875fff;
+            --accent-glow: rgba(135, 95, 255, 0.35);
+            --success: #3cff82;
+            --danger: #ff4757;
+            --text-main: #ededf5;
+            --text-dim: #8a8a9e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(135, 95, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 85% 90%, rgba(60, 255, 130, 0.05) 0%, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 430px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+            position: relative;
+            animation: cardEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardEnter {
+            from { opacity: 0; transform: translateY(15px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .top-accent {
+            height: 3px;
+            width: 100%;
+            background: linear-gradient(90deg, var(--accent), #b28dff, var(--accent));
+        }
+
+        .top-accent.denied {
+            background: linear-gradient(90deg, var(--danger), #ff7b88, var(--danger));
+        }
+
+        .header {
+            padding: 18px 22px;
+            background: #15151c;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+        }
+
+        .brand span {
+            color: var(--accent);
+        }
+
+        .badge {
+            font-family: monospace;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: rgba(135, 95, 255, 0.12);
+            color: #b89eff;
+            border: 1px solid rgba(135, 95, 255, 0.3);
+        }
+
+        .badge.denied-badge {
+            background: rgba(255, 71, 87, 0.12);
+            color: var(--danger);
+            border-color: rgba(255, 71, 87, 0.3);
+        }
+
+        .content {
+            padding: 26px 22px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-dim);
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .key-box {
+            background: var(--bg-element);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 14px 16px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--success);
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            word-break: break-all;
+            user-select: all;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px 18px;
+            border-radius: 7px;
+            border: 1px solid var(--accent);
+            background: var(--accent);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            filter: brightness(1.12);
+            box-shadow: 0 0 18px var(--accent-glow);
+        }
+
+        .btn.secondary {
+            background: var(--bg-element);
+            border-color: var(--border);
+            color: var(--text-main);
+        }
+
+        .btn.secondary:hover {
+            border-color: var(--accent);
+            box-shadow: none;
+        }
+
+        .footer {
+            padding: 12px 22px;
+            background: #15151c;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="accentBar" class="top-accent"></div>
+        
+        <div class="header">
+            <div class="brand">DARK <span>HUB</span></div>
+            <div id="statusBadge" class="badge">VERIFYING...</div>
+        </div>
+
+        <!-- ONAYLANDIĞINDA GÖRÜNECEK EKRAN -->
+        <div id="AuthorizedView" class="content hidden">
+            <div class="title">Key Gateway Unlocked</div>
+            <div class="subtitle">LootLabs verification completed. Copy your key below and paste it into the Dark Hub authentication window.</div>
+            
+            <div id="keyDisplay" class="key-box">LOADING KEY...</div>
+            
+            <button id="copyBtn" class="btn">COPY KEY TO CLIPBOARD</button>
+        </div>
+
+        <!-- LOOTLABS'TEN GELİNMEDİĞİNDE (ERİŞİM REDDİ) EKRANI -->
+        <div id="DeniedView" class="content hidden">
+            <div class="title" style="color: var(--danger);">Access Denied</div>
+            <div id="denyReason" class="subtitle">
+                Direct access or bypassed links are blocked. You must complete the official LootLabs gateway to view your Dark Hub key.
+            </div>
+            
+            <a id="lootlabsBtn" href="#" class="btn secondary">GO TO LOOTLABS GATEWAY</a>
+        </div>
+
+        <div class="footer">
+            <span>Dark Hub</span>
+            <span id="refInfo">Gateway: Protected</span>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================================
+        // DARK HUB // SİTE AYARLARI (BURAYI KENDİNE GÖRE DÜZENLE)
+        // ==========================================================
+        const CONFIG = {
+            // 1. GitHub'daki keys.txt dosyanın RAW linki:
+            githubRawKeyUrl: "https://raw.githubusercontent.com/deadnegzel61/REPO_ADIN/main/keys.txt",
+
+            // 2. Oluşturduğun LootLabs kısaltılmış linki (Reddedilenleri buraya yönlendirir):
+            lootlabsLink: "https://lootdest.org/s?SENIN_LOOTLABS_KODUN",
+
+            // 3. LootLabs Destination URL sonuna ekleyeceğin gizli doğrulama parametresi:
+            // Örnek Destination URL: https://kullaniciadin.github.io/darkhub/?verify=dh_verified_2026
+            secretToken: "dh_verified_2026",
+
+            // 4. Kabul edilen resmi LootLabs yönlendirme alan adları:
+            allowedReferrers: [
+                "lootlabs.gg",
+                "loot-link.com",
+                "loot-links.com",
+                "lootdest.com",
+                "lootdest.org",
+                "lootlinks.co",
+                "linkvertise.com"
+            ]
+        };
+
+        const accentBar = document.getElementById("accentBar");
+        const statusBadge = document.getElementById("statusBadge");
+        const authView = document.getElementById("AuthorizedView");
+        const deniedView = document.getElementById("DeniedView");
+        const keyDisplay = document.getElementById("keyDisplay");
+        const copyBtn = document.getElementById("copyBtn");
+        const lootlabsBtn = document.getElementById("lootlabsBtn");
+        const refInfo = document.getElementById("refInfo");
+
+        lootlabsBtn.href = CONFIG.lootlabsLink;
+
+        function isFromLootLabs() {
+            const ref = (document.referrer || "").toLowerCase();
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenParam = urlParams.get("verify");
+
+            // Referrer içinde LootLabs domainlerinden biri var mı kontrol et
+            const refMatched = CONFIG.allowedReferrers.some(domain => ref.includes(domain));
+
+            // URL'yi temizle (Böylece kullanıcı linki kopyalayıp başkasına atsa bile ?verify kodu görünmez)
+            if (window.history && window.history.replaceState) {
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.replaceState({}, document.title, cleanUrl);
+            }
+
+            // Sadece Referrer LootLabs ise (veya gizli token eşleşip doğrudan kopyalanmamışsa) izin ver
+            // Tam katı mod için: refMatched ŞARTI aranır.
+            if (refMatched) {
+                return true;
+            }
+
+            // Eğer kullanıcının tarayıcısı referrer'ı sildiyse ama tek kullanımlık token ile yeni geldiyse:
+            if (tokenParam === CONFIG.secretToken && performance.navigation.type !== 1) {
+                return true;
+            }
+
+            return false;
+        }
+
+        async function loadKeyFromGitHub() {
+            try {
+                const response = await fetch(CONFIG.githubRawKeyUrl + "?t=" + Date.now());
+                if (!response.ok) throw new Error("Key fetch failed");
+                const text = await response.text();
+                const firstKey = text.split(/\r?\n/).map(l => l.trim()).find(l => l.length > 0);
+                keyDisplay.textContent = firstKey || "DARKHUB-2026";
+            } catch (err) {
+                keyDisplay.textContent = "ERROR LOADING KEY";
+            }
+        }
+
+        function initGateway() {
+            if (isFromLootLabs()) {
+                statusBadge.textContent = "VERIFIED";
+                refInfo.textContent = "Source: LootLabs";
+                authView.classList.remove("hidden");
+                loadKeyFromGitHub();
+            } else {
+                accentBar.classList.add("denied");
+                statusBadge.textContent = "BLOCKED";
+                statusBadge.classList.add("denied-badge");
+                refInfo.textContent = "Source: Unauthorized";
+                deniedView.classList.remove("hidden");
+            }
+        }
+
+        copyBtn.addEventListener("click", () => {
+            const keyText = keyDisplay.textContent.trim();
+            if (!keyText || keyText.includes("LOADING")) return;
+            navigator.clipboard.writeText(keyText).then(() => {
+                copyBtn.textContent = "COPIED TO CLIPBOARD!";
+                copyBtn.style.background = "var(--success)";
+                copyBtn.style.borderColor = "var(--success)";
+                copyBtn.style.color = "#000";
+                setTimeout(() => {
+                    copyBtn.textContent = "COPY KEY TO CLIPBOARD";
+                    copyBtn.style.background = "var(--accent)";
+                    copyBtn.style.borderColor = "var(--accent)";
+                    copyBtn.style.color = "#fff";
+                }, 2000);
+            });
+        });
+
+        initGateway();
+    </script>
+</body>
+</html>
